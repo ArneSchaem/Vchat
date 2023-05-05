@@ -16,7 +16,6 @@ import ImageGallery from "./ImageGallery"
 import camerapage from './CameraPage';
 import MessagePage from "./MessagePage";
 import ChatScreen from './ChatScreen';
-
 import CameraPage from './CameraPage';
 
 
@@ -208,7 +207,7 @@ export default function Auth() {
         }}>
         <Stack.Screen name="Welcome" component={Welcome} />
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="ChatScreen" component={ChatScreen} />
+        <Stack.Screen  name="ChatScreen" component={ChatScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Image,Text, StyleSheet, FlatList, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+
 
 const ChatList = ({ navigation }) => {
   const [chats, setChats] = useState([
@@ -26,13 +27,28 @@ const ChatList = ({ navigation }) => {
   const handleChatPress = (item) => {
     navigation.navigate('ChatScreen', { chat: item });
   };
+  const [images, setImages] = useState([]);
 
-  const renderChat = ({ item }) => {
+  useEffect(() => {
+    fetch('https://randomuser.me/api/?results=14')
+      .then(response => response.json())
+      .then(data => {
+        const imageUrls = data.results.map(result => result.picture.large);
+        setImages(imageUrls); 
+      })
+      .catch(error => console.log(error));
+  }, []);
+  
+  const getImageForItem = (index) => {
+    return images[index % images.length];
+  }
+  
+  const renderChat = ({ item, index }) => {
     return (
       <TouchableOpacity onPress={() => handleChatPress(item)}>
         <View style={styles.chatContainer}>
           <View style={styles.chatIconContainer}>
-            <Ionicons name="person-outline" size={24} color="#555" />
+            <Image style={styles.image} source={{ uri: getImageForItem(index) }} />
           </View>
           <View style={styles.chatContent}>
             <View style={styles.chatHeader}>
@@ -45,6 +61,7 @@ const ChatList = ({ navigation }) => {
       </TouchableOpacity>
     );
   };
+  
 
   return (
     <FlatList
@@ -60,7 +77,7 @@ const styles = StyleSheet.create({
   chatContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    padding: 10,
+    padding: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
   },
@@ -90,6 +107,11 @@ const styles = StyleSheet.create({
   },
   chatMessage: {
     color: '#666',
+  },
+  image: {
+    width: 50,
+    height: 50,
+    borderRadius: 100,
   },
 });
 

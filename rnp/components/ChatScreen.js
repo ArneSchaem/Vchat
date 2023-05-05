@@ -56,7 +56,7 @@ const ChatScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginBottom: 30,
+    marginBottom: 25,
     borderRadius: 20,
     
 
@@ -66,13 +66,15 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'flex-end',
     paddingVertical: 16,
-    paddingHorizontal: 12,
+    paddingHorizontal: 22,
+
   },
   message: {
-    backgroundColor: '#eee',
-    padding: 2,
+    backgroundColor: '#fff',
+    padding: 10,
     borderRadius: 8,
-    marginBottom: 8,
+    marginBottom: 18,
+
     alignSelf: 'flex-start',
     maxWidth: '80%',
   },
