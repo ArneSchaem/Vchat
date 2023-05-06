@@ -26,8 +26,13 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "fonts": {
+      "Nexa-Trial-Bold": "/Users/arne/Documents/Projekte/Vchat/rnp/assets/fonts/Nexa-Trial-Bold.ttf"
+
+    },
+    
+    
     "plugins": [
-      "react-native-vision-camera"
     ]
   }
 }

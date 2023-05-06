@@ -6,8 +6,6 @@ export default function App() {
   return (
     <View style={styles.container}>
       <Auth/>
-
-      
       <StatusBar style="auto" />
     </View>
   );

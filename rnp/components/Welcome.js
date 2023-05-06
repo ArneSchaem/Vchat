@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, } from 'react';
 import {
   View,
   Text,
@@ -19,18 +19,18 @@ import facebookLogo from './img/facebook.png';
 import appleLogo from './img/apple.png';
 import googleLogo from './img/google.png';
 import { AntDesign } from '@expo/vector-icons';
+import { useFonts } from 'expo-font';
+
+
+
+  //  'Nexa-Trial-Bold': require('/Users/arne/Documents/Projekte/Vchat/rnp/assets/fonts/Nexa-Trial-Bold.ttf'),
+
+
 
 export default function WelcomePage() {
-  useEffect(() => {
-    async function loadFont() {
-      await Font.loadAsync({
-        'Nexa-Trial-Bold': require('/Users/arne/Desktop/ReactNativProject/rnp/assets/fonts/Nexa-Trial-Bold.ttf'),
-        'Moon-Light': require('/Users/arne/Desktop/ReactNativProject/rnp/assets/fonts/Moon-Light.ttf'),
-
-      });
-    }
-    loadFont();
-  }, []);
+ 
+ 
+  
   
   const navigation = useNavigation();
   const bottomSheetRef = useRef(null);
@@ -93,6 +93,19 @@ export default function WelcomePage() {
       />
     );
   };
+
+  const [loaded] = useFonts({
+    'Nexa-Trial-Bold': require('/Users/arne/Documents/Projekte/Vchat/rnp/assets/fonts/Nexa-Trial-Bold.ttf'),
+    'RobotoCondensed-Bold': require('/Users/arne/Documents/Projekte/Vchat/rnp/assets/fonts/RobotoCondensed-Bold.ttf'),
+
+    
+  });
+  
+    if (!loaded) {
+      return null;
+    }
+
+
 
   return (
     <View style={styles.container}>
@@ -276,7 +289,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginBottom:-10,
-    fontFamily: 'Nexa-Trial-Bold',
+    fontFamily: 'RobotoCondensed-Bold',
     fontSize: 38,
     marginBottom: -5,
   
@@ -288,7 +301,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     fontSize: 38,
     marginBottom:70,
-    fontFamily: 'Nexa-Trial-Bold',
+    fontFamily: 'RobotoCondensed-Bold',
 
 
   },
