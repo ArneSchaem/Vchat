@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, Switch, StyleSheet } from 'react-native';
+import { View, Text, Switch, StyleSheet,Button,TouchableOpacity,navigation } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const Settings = () => {
+
+const Settings = ({ navigation }) => {
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [darkModeEnabled, setDarkModeEnabled] = useState(false);
 
@@ -12,6 +14,15 @@ const Settings = () => {
   const handleDarkModeSwitch = () => {
     setDarkModeEnabled(!darkModeEnabled);
   };
+
+  const handleLogout = async () => {
+    await AsyncStorage.setItem('isLoggedIn', 'false');
+    navigation.navigate('Welcome');
+  };
+  
+  
+  
+
 
   return (
     <View style={styles.container }>
@@ -29,6 +40,8 @@ const Settings = () => {
           onValueChange={handleDarkModeSwitch}
         />
       </View>
+      <Button title="Logout" onPress={handleLogout} />
+
     </View>
   );
 };

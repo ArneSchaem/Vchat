@@ -1,7 +1,10 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions, Image, FlatList, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Dimensions, Image, FlatList, TouchableOpacity, Button  } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { AntDesign } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 
 
 
@@ -22,14 +25,17 @@ const images = [
   { id: 9, uri: 'https://via.placeholder.com/375x487'},
 ];
 
-
 const Home = () => {
+  
+
+  
   const renderItem = ({ item }) => {
     const isHorizontal = item.uri.includes('/1200/800');
     const itemWidth = isHorizontal ? width : imageWidth;
     const itemHeight = isHorizontal ? imageHeight : imageHeight;
     return (
       <View style={styles.imageContainer}>
+
         {item.horizontal ? (
           <Image source={{ uri: item.uri }} style={styles.horizontalImage} />
         ) : (

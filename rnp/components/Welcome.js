@@ -10,6 +10,8 @@ import {
   Image,
   Button,
   TouchableWithoutFeedback,
+  CustomInput,
+  Animated,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import * as Font from 'expo-font';
@@ -20,6 +22,10 @@ import appleLogo from './img/apple.png';
 import googleLogo from './img/google.png';
 import { AntDesign } from '@expo/vector-icons';
 import { useFonts } from 'expo-font';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Alert } from 'react-native';
+
+
 
 
 
@@ -27,12 +33,62 @@ import { useFonts } from 'expo-font';
 
 
 
-export default function WelcomePage() {
- 
- 
+export default function WelcomePage({ navigation }) {
+    
+
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   
+  const handleLogin = async () => {
+    try {
+      if (email === '1' && password === '2') {
+        // Speichern Sie den Anmeldestatus als "true" im Speicher
+        await AsyncStorage.setItem('isLoggedIn', 'true');
+        // Navigieren Sie zur Hauptseite
+        closeBottomSheet();
+         navigation.navigate('Home');
+      } else {
+        // Zeigen Sie eine Fehlermeldung an, wenn die Anmeldeinformationen falsch sind
+        Alert.alert('Falsche Anmeldeinformationen');
+      }
+    } catch (error) {
+      console.log('Fehler beim Speichern des Anmeldestatus:', error);
+    }
+  };
+
+    
+    
+    
   
-  const navigation = useNavigation();
+
+    
+
+    const buttonAnimation = useRef(new Animated.Value(1)).current;
+    
+    const onPressIn = () => {
+      Animated.timing(buttonAnimation, {
+        toValue: 0.9,
+        duration: 100,
+        useNativeDriver: true,
+      }).start();
+    };
+
+  
+    const onPressOut = () => {
+      Animated.timing(buttonAnimation, {
+        toValue: 1,
+        duration: 100,
+        useNativeDriver: true,
+      }).start();
+    };
+    const scaleStyle = {
+      transform: [{ scale: buttonAnimation }],
+    };
+
+  
+ 
+
+  
   const bottomSheetRef = useRef(null);
   const bottomSheetRef2 = useRef(null);
 
@@ -104,17 +160,38 @@ export default function WelcomePage() {
     if (!loaded) {
       return null;
     }
+    
+
+      
+      const logicbutton = () => {
+        handleLogin(email, password);
+        openBottomSheet();
+        
+      };
+   
+        
+
+
+
 
 
 
   return (
     <View style={styles.container}>
+      
       <View style={styles.lineStyle} />
       <View style={styles.buttonContainer}>
-        
-        <TouchableOpacity style={styles.button} onPress={openBottomSheet}>
-          <Text style={styles.buttonText}>Log in</Text>
+        <TouchableOpacity
+        activeOpacity={1}
+        onPressIn={onPressIn}
+        onPressOut={onPressOut}
+        onPress={openBottomSheet}>
+      <Animated.View style={[styles.firstloginButton, scaleStyle]}>
+          <Text style={styles.firstbuttonText}>Log in</Text>
+          </Animated.View>
         </TouchableOpacity>
+
+
         <View style={styles.rowContainer}>
           <Text style={styles.textLabel}>Don't have an account?</Text>
           <Pressable
@@ -157,6 +234,7 @@ export default function WelcomePage() {
         keyboardType="email-address"
         autoCapitalize="none"
         autoCorrect={false}
+        value={email} onChangeText={setEmail}
       />
     </View>
     <View style={styles.inputView}>
@@ -167,6 +245,8 @@ export default function WelcomePage() {
         secureTextEntry={true}
         autoCapitalize="none"
         autoCorrect={false}
+        
+        value={password} onChangeText={setPassword} 
       />
     </View>
     <View style={{ flexDirection: 'row', alignItems: 'center', marginTop:20, }}>
@@ -192,8 +272,15 @@ export default function WelcomePage() {
       </View>
     </View>
     
-    <TouchableOpacity style={styles.loginButton} onPress={handlePress}>
-      <Text style={styles.loginText}>Login</Text>
+    <TouchableOpacity
+    activeOpacity={1}
+    onPressIn={onPressIn}
+    onPressOut={onPressOut}
+   
+    onPress={logicbutton}>
+      <Animated.View style={[styles.loginButton, scaleStyle]}>
+          <Text style={styles.loginText}>Log in</Text>
+          </Animated.View>
     </TouchableOpacity>
     
     <View style={styles.rowContainer2}>
@@ -516,19 +603,56 @@ inputText4: {
 },
 
 // Button styles
-loginButton: {
-  width: '80%',
-  backgroundColor: 'black',
-  borderRadius: 25,
-  height: 50,
+firstloginButton: {
   alignItems: 'center',
-  justifyContent: 'center',
-  marginTop: 40,
+  paddingVertical: 16,
+  paddingHorizontal: 60,
+  borderRadius: 20,
+  elevation: 3,
+  backgroundColor: '#fff',
   marginBottom: 10,
+  shadowColor: '#ddd',
+  shadowOffset: {
+    width: 0,
+    height: 7,
+  },
+  shadowOpacity: 1.25,
+  shadowRadius: 0,
+  elevation: 5,
 },
+
+firstbuttonText: {
+  color: 'black',
+  fontSize: 20,
+  fontFamily: 'Nexa-Trial-Bold',
+
+},
+
+
+loginButton: {
+  alignItems: 'center',
+  paddingVertical: 16,
+  paddingHorizontal: 30,
+  borderRadius: 20,
+  elevation: 3,
+  color: 'black',
+
+  backgroundColor: '#fff',
+  marginBottom: 10,
+  shadowColor: '#ddd',
+  shadowOffset: {
+    width: 0,
+    height: 7,
+  },
+  shadowOpacity:1.25,
+  shadowRadius: 0,
+  elevation: 5,
+  },
 loginText: {
-  color: 'white',
-  fontSize: 11,
+  color: 'black',
+  fontSize: 20,
+  fontFamily: 'Nexa-Trial-Bold',
+
 },
 forgot: {
   color: 'black',
@@ -595,6 +719,8 @@ description: {
   rowContainer: {
   flexDirection: 'row',
   alignItems: 'center',
+  marginTop:20,
+
   },
   textLabel: {
   fontSize: 16,

@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ScrollView } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import { TouchableOpacity } from 'react-native';
-import { View, Text, Settings } from 'react-native';
+import { View, Text, Settings, } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import { Ionicons } from "@expo/vector-icons";
@@ -12,11 +12,21 @@ import { AntDesign } from '@expo/vector-icons';
 import SettingsPage from './SettingsPage';
 import HomePage from './HomePage';
 import Welcome from './Welcome';
+
+
 import ImageGallery from "./ImageGallery"
 import camerapage from './CameraPage';
 import MessagePage from "./MessagePage";
 import ChatScreen from './ChatScreen';
 import CameraPage from './CameraPage';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
+
+
+
+
+
 
 
 const Tab = createBottomTabNavigator();
@@ -194,22 +204,41 @@ function HomeScreen({ navigation }) {
 
 
 
+
+
 export default function Auth() {
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
+
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      const status = await AsyncStorage.getItem('isLoggedIn');
+      setIsLoggedIn(status === 'true');
+    };
+    checkLoginStatus();
+  }, []);
+
+  if (isLoggedIn === null) {
+    // Return a loading indicator or splash screen
+    return null;
+  }
+
   
   
+
   return (
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
-          gestureEnabled: false,
+          gestureEnabled: true,
           gestureDirection: "horizontal"
-        }}>
+        }}
+        initialRouteName={isLoggedIn ? "Home" : "Welcome"} // Set the initial screen based on login status
+      >
         <Stack.Screen name="Welcome" component={Welcome} />
         <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen  name="ChatScreen" component={ChatScreen} />
+        <Stack.Screen name="ChatScreen" component={ChatScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
 }
-
